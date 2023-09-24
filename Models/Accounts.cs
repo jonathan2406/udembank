@@ -20,7 +20,7 @@ namespace udembankproject.Models
 
         [BsonElement("Account Number")]
 
-        public int AccountNumber {  get; set; }
+        public string AccountNumber { get; set; }
 
         [BsonElement("Amount")]
 
