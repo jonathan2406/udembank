@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using udembankproject.Models;
 
 
@@ -13,6 +13,7 @@ namespace udembankproject.Controllers
 {
     internal class AccountController
     {
+
         private readonly IMongoCollection<Accounts> accountCollection;
 
         public AccountController(IMongoCollection<Accounts> accountCollection)
@@ -26,13 +27,17 @@ namespace udembankproject.Controllers
             var collection = database.GetCollection<BsonDocument>("Accounts");
             var filter = Builders<BsonDocument>.Filter.Eq("Account Number", AccountNumber);
             var result = collection.Find(filter).ToList();
+
             if (result.Count() == 1)
             {
+                Thread.Sleep(5000);
                 return result[0]["_id"].AsObjectId;
             }
             else
             {
+
                 Console.WriteLine("Card number not found");
+                Thread.Sleep(5000);
                 return null;
             }
         }

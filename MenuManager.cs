@@ -52,6 +52,7 @@ namespace udembankproject
                         break;
 
                     case Register_LoginOptions.Register:
+                        Console.WriteLine("add userrrrrrr");
                         UsersController.AddUser();
                         break;
 

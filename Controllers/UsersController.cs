@@ -20,6 +20,7 @@ namespace udembankproject.Controllers
             var cardNumber = AnsiConsole.Ask<string>("Card Number: ");
             ObjectId? AccoundID = AccountController.GetAccountID(cardNumber);
 
+
             if (AccoundID == null)
             {
                 return;
@@ -30,7 +31,7 @@ namespace udembankproject.Controllers
                 return;
             }
 
-            if (VerifyUser(name) == false)
+            if (VerifyUser(name) == true)
             {
                 return;
             }
