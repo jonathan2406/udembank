@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace udembankproject.Models
+namespace udembankproject
 {
     public class Users
     {
@@ -25,7 +25,7 @@ namespace udembankproject.Models
         public string Password { get; set; }
 
         [BsonElement("AccountID")]
-        public ObjectId AccountID { get; set; }
+        public ObjectId? AccountID { get; set; }
 
     }
 }

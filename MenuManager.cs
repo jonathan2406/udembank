@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
@@ -11,63 +12,43 @@ using udembankproject.Controllers;
 
 namespace udembankproject
 {
-    public class MenuManager
+    internal class MenuManager
     {
-        private readonly AccountController accountController;
-
-        public MenuManager() 
+        enum Register_LoginOptions
         {
-            var client = new MongoClient("mongodb+srv://LassoVB:lasso123@udembank.qozsdkg.mongodb.net/");
-            var database = client.GetDatabase("UdemBank");
-            var collection = database.GetCollection<Accounts>("Accounts");
-            this.accountController = new AccountController(collection);
+            Login,
+            Register,
+            Quit
         }
-        public void ShowMainMenu()
+        public static void Register_LoginMenu()
         {
             while (true)
             {
                 AnsiConsole.Clear();
 
-                var option = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("Select an option:")
-                        .PageSize(5)
-                        .AddChoices("View Accounts", "Create Accounts", "View Banks", "View Loans", "View Movements", "View Savings Groups", "View Transfers", "View Users", "Exit")
-                );
+            var option = AnsiConsole.Prompt(
+                new SelectionPrompt<Register_LoginOptions>()
+                .Title("Welcome to UdemBank")
+                .AddChoices(
+                    Register_LoginOptions.Login,
+                    Register_LoginOptions.Register,
+                    Register_LoginOptions.Quit));
+            switch (option)
+            {
+                case Register_LoginOptions.Login:
+                    if (UsersController.Login() == true)
+                    {
+                        Console.WriteLine("login exitoso");
+                        //menu principal
+                    }
+                    break;
 
-                switch (option)
-                {
-                    case "View Accounts":
-                        accountController.ViewAccounts();
-                        break;
-                    
-                    case "Create Accounts":
-                        accountController.CreateAccount();
-                        break;
+                case Register_LoginOptions.Register:
+                    UsersController.AddUser();
+                    break;
 
-                    case "View Banks":
-                        
-                        break;
-                    
-                    case "View Loans":
-                        
-                        break;
-                    
-                    case "View Movements":
-                        
-                        break;
-                    
-                    case "View Savings Groups":
-                        
-                        break;
-                    
-                    case "View Transfers":
-                        
-                        break;
-                    
-                    case "View Users":
-                        
-                        break;
+                case Register_LoginOptions.Quit:
+                    break;
                     
                     case "Exit":
                         return;
