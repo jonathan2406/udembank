@@ -44,5 +44,27 @@ namespace udembankproject
                     break;
             }
         }
+        enum SavingsGroupOptions
+        {
+            ViewMySavingsGroups,
+            CreateSavingsGroups
+        }
+        public static void SavingsGroupMenu1()
+        {
+            var option = AnsiConsole.Prompt(
+                new SelectionPrompt<SavingsGroupOptions>()
+                .Title("SavingsGroupMenu")
+                .AddChoices(
+                    SavingsGroupOptions.ViewMySavingsGroups,
+                    SavingsGroupOptions.CreateSavingsGroups));
+            switch (option)
+            {
+                case SavingsGroupOptions.ViewMySavingsGroups:
+                    break;
+
+                case SavingsGroupOptions.CreateSavingsGroups:
+                    break;
+            }
+        }
     }
 }
