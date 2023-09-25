@@ -15,9 +15,12 @@ namespace udembankproject.Controllers
     {
         public static void AddUser()
         {
-            var name = AnsiConsole.Ask<string>("User name:");
-            var password = AnsiConsole.Ask<string>("password: ");
-            var cardNumber = AnsiConsole.Ask<string>("Card Number: ");
+            var name = AnsiConsole.Prompt(new TextPrompt<string>("User Name:")
+                .PromptStyle(Style.Parse("green")));
+            var password = AnsiConsole.Prompt(new TextPrompt<string>("Password: ")
+                .PromptStyle(Style.Parse("green")));
+            var cardNumber = AnsiConsole.Prompt(new TextPrompt<string>("Card Number: ")
+                .PromptStyle(Style.Parse("green")));
             ObjectId? AccoundID = AccountController.GetAccountID(cardNumber);
 
 
@@ -53,8 +56,12 @@ namespace udembankproject.Controllers
 
         public static bool Login()
         {
-            var name = AnsiConsole.Ask<string>("User name:");
-            var password = AnsiConsole.Ask<string>("password: ");
+            var name = AnsiConsole.Prompt(new TextPrompt<string>("Username: ")
+                .PromptStyle(Style.Parse("green"))
+                );
+            
+            var password = AnsiConsole.Prompt(new TextPrompt<string>("Password: ")
+                .PromptStyle(Style.Parse("green")));
 
             if (VerifyLogin(name, password) == true)
             {

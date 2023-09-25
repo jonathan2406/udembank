@@ -15,7 +15,7 @@ namespace udembankproject
         {
             if (database == null)
             {
-                MongoClient client = new MongoClient("mongodb+srv://siyahkugu:2536182Aleja.@udembank.qozsdkg.mongodb.net/?retryWrites=true&w=majority");
+                MongoClient client = new MongoClient("mongodb+srv://LassoVB:lasso123@udembank.qozsdkg.mongodb.net/");
                 database = client.GetDatabase("UdemBank");
             }
             return database;
