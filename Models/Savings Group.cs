@@ -19,7 +19,7 @@ namespace udembankproject.Models
         public string Name { get; set; }
 
         [BsonElement("UsersID")]
-        public ObjectId UsersID { get; set; }
+        public List<ObjectId> UsersID { get; set; }
 
         [BsonElement("Amount")]
 

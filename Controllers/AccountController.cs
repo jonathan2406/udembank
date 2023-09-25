@@ -30,14 +30,12 @@ namespace udembankproject.Controllers
 
             if (result.Count() == 1)
             {
-                Thread.Sleep(5000);
                 return result[0]["_id"].AsObjectId;
             }
             else
             {
 
                 Console.WriteLine("Card number not found");
-                Thread.Sleep(5000);
                 return null;
             }
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Spectre.Console;
@@ -14,6 +14,11 @@ namespace udembankproject
 {
     public class MenuManager
     {
+        public static string ActiveUser;
+        public static void SetActiveUser(string username)
+        {
+            ActiveUser = username;
+        }
         private readonly AccountController accountController;
 
         public MenuManager(IMongoDatabase database)
@@ -74,7 +79,7 @@ namespace udembankproject
                     new SelectionPrompt<string>()
                         .Title("Select an option:")
                         .PageSize(5)
-                        .AddChoices("View Accounts", "Create Accounts", "View Banks", "View Loans", "View Movements", "View Savings Groups", "View Transfers", "View Users", "Exit")
+                        .AddChoices("View Accounts", "Create Accounts","Savings Groups", "Exit")
                 );
 
                 switch (option)
@@ -87,29 +92,10 @@ namespace udembankproject
                         accountController.CreateAccount();
                         break;
 
-                    case "View Banks":
-
+                    case "Savings Groups":
+                        SavingsGroupMenu1();
                         break;
 
-                    case "View Loans":
-
-                        break;
-
-                    case "View Movements":
-
-                        break;
-
-                    case "View Savings Groups":
-
-                        break;
-
-                    case "View Transfers":
-
-                        break;
-
-                    case "View Users":
-
-                        break;
 
                     case "Exit":
                         return;
@@ -120,7 +106,8 @@ namespace udembankproject
         enum SavingsGroupOptions
         {
             ViewMySavingsGroups,
-            CreateSavingsGroups
+            CreateSavingsGroups,
+            TransferToSavingGroup
         }
         public static void SavingsGroupMenu1()
         {
@@ -129,13 +116,19 @@ namespace udembankproject
                 .Title("SavingsGroupMenu")
                 .AddChoices(
                     SavingsGroupOptions.ViewMySavingsGroups,
-                    SavingsGroupOptions.CreateSavingsGroups));
+                    SavingsGroupOptions.CreateSavingsGroups,
+                    SavingsGroupOptions.TransferToSavingGroup
+                    ));
             switch (option)
             {
                 case SavingsGroupOptions.ViewMySavingsGroups:
                     break;
 
                 case SavingsGroupOptions.CreateSavingsGroups:
+                    SavingGroupController.AddSavingGroup();
+                    break;
+
+                case SavingsGroupOptions.TransferToSavingGroup:
                     break;
             }
         }

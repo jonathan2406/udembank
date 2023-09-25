@@ -48,6 +48,7 @@ namespace udembankproject.Controllers
 
             collection.InsertOne(insertion);
             Console.WriteLine("Successful registration");
+            Thread.Sleep(2000);
         }
 
         public static bool Login()
@@ -57,6 +58,7 @@ namespace udembankproject.Controllers
 
             if (VerifyLogin(name, password) == true)
             {
+                MenuManager.SetActiveUser(name);
                 return true;
             }
             return false;
