@@ -69,7 +69,7 @@ namespace udembankproject.Controllers
             AnsiConsole.Clear();
             AnsiConsole.Render(table);
 
-            AnsiConsole.Markup("[green]Press Enter to continue...[/]");
+            AnsiConsole.Markup("[yellow]Press Enter to continue...[/]");
             Console.ReadLine();
         }
 

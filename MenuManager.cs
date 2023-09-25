@@ -15,11 +15,15 @@ namespace udembankproject
     public class MenuManager
     {
         private readonly AccountController accountController;
+        private readonly TransfersController transfersController;
+        private readonly MovementController movementController;
 
         public MenuManager(IMongoDatabase database)
         {
             var collection = database.GetCollection<Accounts>("Accounts");
             this.accountController = new AccountController(collection);
+            this.transfersController = new TransfersController(collection, database.GetCollection<Movement>("Movement"), database.GetCollection<Transfers>("Transfers"));
+            this.movementController = new MovementController(database.GetCollection<Movement>("Movement"));
         }
         enum Register_LoginOptions
         {
@@ -46,13 +50,13 @@ namespace udembankproject
                     case Register_LoginOptions.Login:
                         if (UsersController.Login() == true)
                         {
-                            Console.WriteLine("Login exitoso");
+                            Console.WriteLine("Successful login");
                             return true; // Devuelve true en caso de inicio de sesión exitoso
                         }
                         break;
 
                     case Register_LoginOptions.Register:
-                        Console.WriteLine("add userrrrrrr");
+                        Console.WriteLine("Register user");
                         UsersController.AddUser();
                         break;
 
@@ -74,7 +78,7 @@ namespace udembankproject
                     new SelectionPrompt<string>()
                         .Title("Select an option:")
                         .PageSize(5)
-                        .AddChoices("View Accounts", "Create Accounts", "View Banks", "View Loans", "View Movements", "View Savings Groups", "View Transfers", "View Users", "Exit")
+                        .AddChoices("View Accounts", "Create Accounts", "Transfer Amounts", "View Movements", "View Transfers", "Exit")
                 );
 
                 switch (option)
@@ -82,35 +86,18 @@ namespace udembankproject
                     case "View Accounts":
                         accountController.ViewAccounts();
                         break;
-
                     case "Create Accounts":
                         accountController.CreateAccount();
                         break;
-
-                    case "View Banks":
-
+                    case "Transfer Amounts":
+                        transfersController.TransferAmounts();
                         break;
-
-                    case "View Loans":
-
-                        break;
-
                     case "View Movements":
-
+                        movementController.ViewMovements();
                         break;
-
-                    case "View Savings Groups":
-
-                        break;
-
                     case "View Transfers":
-
+                        transfersController.ViewTransfers();
                         break;
-
-                    case "View Users":
-
-                        break;
-
                     case "Exit":
                         return;
                 }
