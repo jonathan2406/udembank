@@ -46,7 +46,8 @@ namespace udembankproject.Controllers
             {
                 User = name,
                 Password = password,
-                AccountID = AccoundID
+                AccountID = AccoundID,
+                Cheats = false
             };
 
             collection.InsertOne(insertion);
@@ -136,6 +137,22 @@ namespace udembankproject.Controllers
             {
                 return true;
             }
+        }
+
+        public static ObjectId ObtenerIdPorUsername(string username)
+        {
+            IMongoDatabase database = DBconnection.Connection(); // Conecta a tu base de datos
+            var collection = database.GetCollection<BsonDocument>("Users"); // Obtiene la colección
+
+            var filter = Builders<BsonDocument>.Filter.Eq("User", username); // Crea un filtro
+            var usuario = collection.Find(filter).FirstOrDefault(); // Realiza la consulta
+
+            if (usuario != null)
+            {
+                return usuario["_id"].AsObjectId; // Retorna el _id como ObjectId
+            }
+
+            return ObjectId.Empty; // Si no se encuentra el usuario
         }
     }
 }

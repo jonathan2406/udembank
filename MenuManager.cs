@@ -14,10 +14,11 @@ namespace udembankproject
 {
     public class MenuManager
     {
-        public static string ActiveUser;
+        public static ObjectId ActiveUser;
         public static void SetActiveUser(string username)
         {
-            ActiveUser = username;
+
+            ActiveUser = UsersController.ObtenerIdPorUsername(username);
         }
         private readonly AccountController accountController;
         private readonly TransfersController transfersController;
@@ -40,7 +41,6 @@ namespace udembankproject
         {
             while (true)
             {
-                AnsiConsole.Clear();
 
                 var option = AnsiConsole.Prompt(
                     new SelectionPrompt<Register_LoginOptions>()
@@ -77,13 +77,12 @@ namespace udembankproject
         {
             while (true)
             {
-                AnsiConsole.Clear();
 
                 var option = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title("Select an option:")
                         .PageSize(5)
-                        .AddChoices("View Accounts", "Create Accounts", "Transfer Amounts", "View Movements", "View Transfers", "Exit")
+                        .AddChoices("View Accounts", "Create Accounts", "Transfer Amounts", "View Movements", "View Transfers", "Savings Groups","Exit")
                 );
 
                 switch (option)
@@ -137,7 +136,12 @@ namespace udembankproject
                     break;
 
                 case SavingsGroupOptions.CreateSavingsGroups:
-                    SavingGroupController.AddSavingGroup();
+                    if (SavingGroupController.VerificarAparicionesMenosDeTresVeces(ActiveUser) == true)
+                    {
+                        SavingGroupController.AddSavingGroup();
+                        break;
+                    }
+                    Console.WriteLine("The user is already in the maximum number of groups allowed");
                     break;
 
                 case SavingsGroupOptions.TransferToSavingGroup:

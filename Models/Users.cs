@@ -27,5 +27,7 @@ namespace udembankproject
         [BsonElement("AccountID")]
         public ObjectId? AccountID { get; set; }
 
+        [BsonElement("Cheats")]
+        public bool Cheats { get; set; }
     }
 }
