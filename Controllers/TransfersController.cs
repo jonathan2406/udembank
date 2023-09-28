@@ -63,12 +63,12 @@ namespace udembankproject.Controllers
             accountCollection.UpdateOne(x => x.Id == sendAccount.Id, Builders<Accounts>.Update.Set(a => a.Amount, sendAccount.Amount));
             accountCollection.UpdateOne(x => x.Id == receptionAccount.Id, Builders<Accounts>.Update.Set(a => a.Amount, receptionAccount.Amount));
 
-            var SendAccount = ObjectId.Parse(sendAccount.Id);
-            var ReceptionAccount = ObjectId.Parse(receptionAccount.Id);
+            var SendAccount = ObjectId.Parse(sendAccount.Id.ToString());
+            var ReceptionAccount = ObjectId.Parse(receptionAccount.Id.ToString());
 
 
             SaveTransfer(SendAccount, ReceptionAccount, amount);
-            var receptionAccountId = ObjectId.Parse(receptionAccount.Id);
+            var receptionAccountId = ObjectId.Parse(receptionAccount.Id.ToString());
 
             // Crea un nuevo registro de movimiento para la transferencia
             var newMovement = new Movement

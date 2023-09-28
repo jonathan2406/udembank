@@ -54,15 +54,7 @@ namespace udembankproject.Controllers
                 .AddColumn("Amount", column => column.Alignment(Justify.Left))
                 .AddColumn("ID", column => column.Alignment(Justify.Left));
 
-            foreach (var account in accounts)
-            {
-                table.AddRow(
-                    account.AccountNumber,
-                    account.OwnerName,
-                    account.Amount.ToString(),
-                    account.Id
-                );
-            }
+        
 
             AnsiConsole.Clear();
             AnsiConsole.Render(table);

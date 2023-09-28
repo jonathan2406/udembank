@@ -15,10 +15,10 @@ namespace udembankproject
     public class MenuManager
     {
         public static ObjectId ActiveUser;
-        public static void SetActiveUser(string username)
+        public static void SetActiveUser(ObjectId user)
         {
 
-            ActiveUser = UsersController.ObtenerIdPorUsername(username);
+            ActiveUser = user;
         }
         private readonly AccountController accountController;
         private readonly TransfersController transfersController;

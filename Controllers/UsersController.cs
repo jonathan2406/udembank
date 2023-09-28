@@ -60,13 +60,12 @@ namespace udembankproject.Controllers
             var name = AnsiConsole.Prompt(new TextPrompt<string>("Username: ")
                 .PromptStyle(Style.Parse("green"))
                 );
-            
+
             var password = AnsiConsole.Prompt(new TextPrompt<string>("Password: ")
                 .PromptStyle(Style.Parse("green")));
 
             if (VerifyLogin(name, password) == true)
             {
-                MenuManager.SetActiveUser(name);
                 return true;
             }
             return false;
@@ -84,6 +83,7 @@ namespace udembankproject.Controllers
                 Console.WriteLine("Password wrong");
                 return false;
             }
+            MenuManager.SetActiveUser(ObtenerIdPorUsername(user));
             return true;
         }
 
@@ -147,12 +147,25 @@ namespace udembankproject.Controllers
             var filter = Builders<BsonDocument>.Filter.Eq("User", username); // Crea un filtro
             var usuario = collection.Find(filter).FirstOrDefault(); // Realiza la consulta
 
-            if (usuario != null)
-            {
-                return usuario["_id"].AsObjectId; // Retorna el _id como ObjectId
-            }
 
-            return ObjectId.Empty; // Si no se encuentra el usuario
+            return usuario["_id"].AsObjectId; // Retorna el _id como ObjectId
+            
+
         }
+
+
+
+        public static BsonDocument ObtenerNumeroDeCuentaPorUserId(ObjectId userId)
+        {
+            Console.WriteLine("el udser id que recibe es: ");
+            Console.WriteLine(userId);
+            IMongoDatabase database = DBconnection.Connection();
+            var usersCollection = database.GetCollection<BsonDocument>("Users");
+
+            var usuario = usersCollection.Find(new BsonDocument("_id", userId)).FirstOrDefault();
+
+            return usuario;
+        }
+
     }
 }

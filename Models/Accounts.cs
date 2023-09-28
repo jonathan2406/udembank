@@ -13,7 +13,7 @@ namespace udembankproject.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
 
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
 
         [BsonElement("Owner name")]
         public string OwnerName { get; set; }
