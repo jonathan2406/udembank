@@ -11,52 +11,52 @@ namespace udembankproject
 {
     internal class Collections
     {
-        public static IMongoCollection<Accounts> GetAccountsCollection()
+        public static IMongoCollection<BsonDocument> GetAccountsCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<Accounts>("Accounts");
+            var collection = database.GetCollection<BsonDocument>("Accounts");
             return collection;
         }
 
-        public static IMongoCollection<Users> GetUsersCollection()
+        public static IMongoCollection<BsonDocument> GetUsersCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<Users>("Users");
+            var collection = database.GetCollection<BsonDocument>("Users");
             return collection;
         }
 
-        public static IMongoCollection<Savings_Group> GetSavingsGroupCollection()
+        public static IMongoCollection<BsonDocument> GetSavingsGroupCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<Savings_Group>("SavingsGroup");
+            var collection = database.GetCollection<BsonDocument>("SavingsGroup");
             return collection;
         }
 
-        public static IMongoCollection<Loans> GetLoansCollection()
+        public static IMongoCollection<BsonDocument> GetLoansCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<Loans>("Loans");
+            var collection = database.GetCollection<BsonDocument>("Loans");
             return collection;
         }
 
-        public static IMongoCollection<Movement> GetMovementsCollection()
+        public static IMongoCollection<BsonDocument> GetMovementsCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<Movement>("Movement");
+            var collection = database.GetCollection<BsonDocument>("Movement");
             return collection;
         }
 
-        public static IMongoCollection<Transfers> GetTransfersCollection()
+        public static IMongoCollection<BsonDocument> GetTransfersCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<Transfers>("Transfers");
+            var collection = database.GetCollection<BsonDocument>("Transfers");
             return collection;
         }
 
-        public static IMongoCollection<Bank> GetBankCollection()
+        public static IMongoCollection<BsonDocument> GetBankCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<Bank>("Bank");
+            var collection = database.GetCollection<BsonDocument>("Bank");
             return collection;
         }
     }
