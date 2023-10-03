@@ -39,9 +39,6 @@ namespace udembankproject.Controllers
                 return;
             }
 
-            var database = DBconnection.Connection();
-            var collection = database.GetCollection<Users>("Users");
-
             var insertion = new Users
             {
                 User = name,
@@ -50,7 +47,7 @@ namespace udembankproject.Controllers
                 Cheats = false
             };
 
-            collection.InsertOne(insertion);
+            Collections.GetUsersCollectionOriginal().InsertOne(insertion);
             Console.WriteLine("Successful registration");
             Thread.Sleep(2000);
         }
@@ -66,7 +63,7 @@ namespace udembankproject.Controllers
 
             if (VerifyLogin(name, password) == true)
             {
-                Console.WriteLine($"el numero de cuenta del usuario logueado es: {ObtenerNumeroDeCuentaPorUserId(MenuManager.ActiveUser)}");
+                Console.WriteLine("login succesfull");
                 return true;
             }
             return false;
@@ -90,10 +87,8 @@ namespace udembankproject.Controllers
 
         public static bool VerifyUser(string user)
         {
-            IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<BsonDocument>("Users");
             var filter = Builders<BsonDocument>.Filter.Eq("User", user);
-            bool Verify = collection.Find(filter).Any();
+            bool Verify = Collections.GetUsersCollectionBson().Find(filter).Any();
 
             if (Verify == true)
             {
@@ -107,10 +102,8 @@ namespace udembankproject.Controllers
 
         public static bool VerifyPassword(string password)
         {
-            IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<BsonDocument>("Users");
             var filter = Builders<BsonDocument>.Filter.Eq("Password", password);
-            bool Verify = collection.Find(filter).Any();
+            bool Verify = Collections.GetUsersCollectionBson().Find(filter).Any();
 
             if (Verify == true)
             {
@@ -124,10 +117,8 @@ namespace udembankproject.Controllers
 
         public static bool VerifyUserAccountExistence(ObjectId? AccountID)
         {
-            IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<BsonDocument>("Users");
             var filter2 = Builders<BsonDocument>.Filter.Eq("AccountID", AccountID);
-            bool AccountUserexist = collection.Find(filter2).Any();
+            bool AccountUserexist = Collections.GetUsersCollectionBson().Find(filter2).Any();
 
             if (AccountUserexist == true)
             {
@@ -142,11 +133,9 @@ namespace udembankproject.Controllers
 
         public static ObjectId ObtenerIdPorUsername(string username)
         {
-            IMongoDatabase database = DBconnection.Connection(); // Conecta a tu base de datos
-            var collection = database.GetCollection<BsonDocument>("Users"); // Obtiene la colección
 
             var filter = Builders<BsonDocument>.Filter.Eq("User", username); // Crea un filtro
-            var usuario = collection.Find(filter).FirstOrDefault(); // Realiza la consulta
+            var usuario = Collections.GetUsersCollectionBson().Find(filter).FirstOrDefault(); // Realiza la consulta
 
 
             return usuario["_id"].AsObjectId; // Retorna el _id como ObjectId
@@ -158,14 +147,11 @@ namespace udembankproject.Controllers
 
         public static string ObtenerNumeroDeCuentaPorUserId(ObjectId userId)
         {
-            IMongoDatabase database = DBconnection.Connection();
-            var usersCollection = database.GetCollection<BsonDocument>("Users");
-            var accountsCollection = database.GetCollection<BsonDocument>("Accounts");
 
-            var usuario = usersCollection.Find(new BsonDocument("_id", userId)).FirstOrDefault();
+            var usuario = Collections.GetUsersCollectionBson().Find(new BsonDocument("_id", userId)).FirstOrDefault();
 
             var accountId = usuario.GetValue("AccountID").AsObjectId;
-            var cuenta = accountsCollection.Find(new BsonDocument("_id", accountId)).FirstOrDefault();
+            var cuenta = Collections.GetAccountsCollectionBson().Find(new BsonDocument("_id", accountId)).FirstOrDefault();
 
             return cuenta.GetValue("Account Number").AsString;
         }

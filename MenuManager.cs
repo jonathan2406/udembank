@@ -17,110 +17,68 @@ namespace udembankproject
         public static ObjectId ActiveUser;
         public static void SetActiveUser(ObjectId user)
         {
-
             ActiveUser = user;
         }
-        private readonly AccountController accountController;
-        private readonly TransfersController transfersController;
-        private readonly MovementController movementController;
 
-        public MenuManager(IMongoDatabase database)
-        {
-            var collection = database.GetCollection<Accounts>("Accounts");
-            this.accountController = new AccountController(collection);
-            this.transfersController = new TransfersController(collection, database.GetCollection<Movement>("Movement"), database.GetCollection<Transfers>("Transfers"));
-            this.movementController = new MovementController(database.GetCollection<Movement>("Movement"));
-        }
-        enum Register_LoginOptions
+        public enum Register_LoginOptions
         {
             Login,
             Register,
             Quit
         }
-        public static bool Register_LoginMenu()
+        public static Register_LoginOptions Register_LoginMenu()
         {
-            while (true)
-            {
 
-                var option = AnsiConsole.Prompt(
-                    new SelectionPrompt<Register_LoginOptions>()
-                    .Title("Welcome to UdemBank")
+
+            var option = AnsiConsole.Prompt(
+                new SelectionPrompt<Register_LoginOptions>()
+                .Title("Welcome to UdemBank")
+                .AddChoices(
+                    Register_LoginOptions.Login,
+                    Register_LoginOptions.Register,
+                    Register_LoginOptions.Quit));
+
+            return option;
+
+
+
+        }
+        public enum MainMenuOptions
+        {
+            ViewAccounts,
+            CreateAccounts,
+            TransferAmounts,
+            ViewMovements,
+            ViewTransfers,
+            SavingsGroups,
+            Exit
+        }
+        public static MainMenuOptions ShowMainMenu()
+        {
+
+
+            var option = AnsiConsole.Prompt(
+                new SelectionPrompt<MainMenuOptions>()
+                    .Title("Select an option:")
                     .AddChoices(
-                        Register_LoginOptions.Login,
-                        Register_LoginOptions.Register,
-                        Register_LoginOptions.Quit));
-
-                switch (option)
-                {
-                    case Register_LoginOptions.Login:
-                        if (UsersController.Login() == true)
-                        {
-                            Console.WriteLine("Successful login");
-                            return true; // Devuelve true en caso de inicio de sesión exitoso
-                        }
-                        break;
-
-                    case Register_LoginOptions.Register:
-                        Console.WriteLine("Register user");
-                        UsersController.AddUser();
-                        break;
-
-                    case Register_LoginOptions.Quit:
-                        return false; // Devuelve false si el usuario elige salir;
-                }
-
-            }
+                    MainMenuOptions.ViewAccounts,
+                    MainMenuOptions.CreateAccounts,
+                    MainMenuOptions.TransferAmounts,
+                    MainMenuOptions.ViewMovements,
+                    MainMenuOptions.ViewTransfers,
+                    MainMenuOptions.SavingsGroups,
+                    MainMenuOptions.Exit));
+            Console.WriteLine(option);
+            return option;
 
         }
-
-        public void ShowMainMenu()
-        {
-            while (true)
-            {
-
-                var option = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("Select an option:")
-                        .PageSize(5)
-                        .AddChoices("View Accounts", "Create Accounts", "Transfer Amounts", "View Movements", "View Transfers", "Savings Groups","Exit")
-                );
-
-                switch (option)
-                {
-                    case "View Accounts":
-                        accountController.ViewAccounts();
-                        break;
-                    case "Create Accounts":
-                        accountController.CreateAccount();
-                        break;
-                    case "Transfer Amounts":
-                        transfersController.TransferAmounts();
-                        break;
-                    case "View Movements":
-                        movementController.ViewMovements();
-                        break;
-                    case "View Transfers":
-                        transfersController.ViewTransfers();
-                        break;
-
-                    case "Savings Groups":
-                        SavingsGroupMenu1();
-                        break;
-
-
-                    case "Exit":
-                        return;
-                }
-            }
-
-        }
-        enum SavingsGroupOptions
+        public enum SavingsGroupOptions
         {
             ViewMySavingsGroups,
             CreateSavingsGroups,
             TransferToSavingGroup
         }
-        public static void SavingsGroupMenu1()
+        public static SavingsGroupOptions SavingsGroupMenu1()
         {
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<SavingsGroupOptions>()
@@ -130,23 +88,7 @@ namespace udembankproject
                     SavingsGroupOptions.CreateSavingsGroups,
                     SavingsGroupOptions.TransferToSavingGroup
                     ));
-            switch (option)
-            {
-                case SavingsGroupOptions.ViewMySavingsGroups:
-                    break;
-
-                case SavingsGroupOptions.CreateSavingsGroups:
-                    if (SavingGroupController.VerificarAparicionesMenosDeTresVeces(ActiveUser) == true)
-                    {
-                        SavingGroupController.AddSavingGroup();
-                        break;
-                    }
-                    Console.WriteLine("The user is already in the maximum number of groups allowed");
-                    break;
-
-                case SavingsGroupOptions.TransferToSavingGroup:
-                    break;
-            }
+            return option;
         }
     }
 }

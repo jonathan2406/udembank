@@ -13,20 +13,11 @@ namespace udembankproject.Controllers
 {
     internal class AccountController
     {
-
-        private readonly IMongoCollection<Accounts> accountCollection;
-
-        public AccountController(IMongoCollection<Accounts> accountCollection)
-        {
-            this.accountCollection = accountCollection;
-        }
         public static ObjectId? GetAccountID(string AccountNumber)
         {
             ObjectId AccountID;
-            IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<BsonDocument>("Accounts");
             var filter = Builders<BsonDocument>.Filter.Eq("Account Number", AccountNumber);
-            var result = collection.Find(filter).ToList();
+            var result = Collections.GetAccountsCollectionBson().Find(filter).ToList();
 
             if (result.Count() == 1)
             {
@@ -40,11 +31,10 @@ namespace udembankproject.Controllers
             }
         }
 
-        public void ViewAccounts()
+        public static void ViewAccounts()
         {
             // Recupera la lista de cuentas desde la base de datos
-            var accounts = accountCollection.Find(_ => true).ToList();
-
+            var accounts = Collections.GetAccountsCollectionOriginal().Find(_ => true).ToList();
             // Crea y muestra la tabla de cuentas
             var table = new Table()
                 .Title("Accounts")
@@ -63,7 +53,7 @@ namespace udembankproject.Controllers
             Console.ReadLine();
         }
 
-        public void CreateAccount()
+        public static void CreateAccount()
         {
             AnsiConsole.Clear();
 
@@ -92,7 +82,7 @@ namespace udembankproject.Controllers
             };
 
             // Inserta la nueva cuenta en la base de datos
-            accountCollection.InsertOne(newAccount);
+            Collections.GetAccountsCollectionOriginal().InsertOne(newAccount);
 
             AnsiConsole.MarkupLine("[green]Account created successfully![/]");
             AnsiConsole.Markup("[yellow]Press Enter to continue...[/]");
