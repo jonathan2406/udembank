@@ -16,11 +16,11 @@ namespace udembankproject.Models
         public ObjectId Id { get; set; }
 
         [BsonElement("Owner name")]
-        public string? OwnerName { get; set; }
+        public string OwnerName { get; set; }
 
         [BsonElement("Account Number")]
 
-        public string? AccountNumber { get; set; }
+        public string AccountNumber { get; set; }
 
        
         [BsonElement("Amount")]

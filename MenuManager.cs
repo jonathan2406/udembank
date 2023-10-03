@@ -27,6 +27,10 @@ namespace udembankproject
         public MenuManager(IMongoDatabase database)
         {
             var collection = database.GetCollection<Accounts>("Accounts");
+
+            // Agregar una declaración de impresión aquí para verificar ActiveUser
+            Console.WriteLine($"ActiveUser before initializing TransfersController: {ActiveUser}");
+
             this.accountController = new AccountController(collection, ActiveUser);
             this.transfersController = new TransfersController(
                 collection,
@@ -35,6 +39,7 @@ namespace udembankproject
                 ActiveUser // Utiliza la cuenta asignada al usuario activo
             );
             this.movementController = new MovementController(database.GetCollection<Movement>("Movement"));
+
         }
         enum Register_LoginOptions
         {
@@ -100,6 +105,7 @@ namespace udembankproject
                         break;
                     case "Transfer Amounts":
                         transfersController.TransferAmounts();
+                        Console.WriteLine($"AccountID of Active User: {ActiveUser}");
                         break;
                     case "View Movements":
                         movementController.ViewMovements();

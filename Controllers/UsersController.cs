@@ -66,7 +66,7 @@ namespace udembankproject.Controllers
 
             if (VerifyLogin(name, password) == true)
             {
-                Console.WriteLine($"el numero de cuenta del usuario logueado es: {ObtenerNumeroDeCuentaPorUserId(MenuManager.ActiveUser)}");
+                Console.WriteLine($"El número de cuenta del usuario logeado es: {ObtenerNumeroDeCuentaPorUserId(MenuManager.ActiveUser)}");
                 return true;
             }
             return false;
@@ -121,7 +121,6 @@ namespace udembankproject.Controllers
                 return false;
             }
         }
-
         public static bool VerifyUserAccountExistence(ObjectId? AccountID)
         {
             IMongoDatabase database = DBconnection.Connection();
@@ -153,9 +152,6 @@ namespace udembankproject.Controllers
             
 
         }
-
-
-
         public static string ObtenerNumeroDeCuentaPorUserId(ObjectId userId)
         {
             IMongoDatabase database = DBconnection.Connection();

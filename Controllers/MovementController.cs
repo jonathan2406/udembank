@@ -10,7 +10,6 @@ using udembankproject.Models;
 
 namespace udembankproject.Controllers
 {
-
     public class MovementController
     {
         private readonly IMongoCollection<Movement> movementCollection;
