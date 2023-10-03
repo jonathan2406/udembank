@@ -91,6 +91,7 @@ namespace udembankproject.Controllers
             Collections.GetTransfersCollectionOriginal().InsertOne(transfer);
         }
 
+
         public static void ViewTransfers()
         {
             AnsiConsole.Clear();

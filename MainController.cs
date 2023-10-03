@@ -87,6 +87,7 @@ namespace udembankproject
                     break;
 
                 case SavingsGroupOptions.TransferToSavingGroup:
+                    SavingGroupController.TransferToSavingGroup();
                     break;
             }
         }

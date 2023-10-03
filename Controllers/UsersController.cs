@@ -139,11 +139,7 @@ namespace udembankproject.Controllers
 
 
             return usuario["_id"].AsObjectId; // Retorna el _id como ObjectId
-            
-
         }
-
-
 
         public static string ObtenerNumeroDeCuentaPorUserId(ObjectId userId)
         {
@@ -155,6 +151,8 @@ namespace udembankproject.Controllers
 
             return cuenta.GetValue("Account Number").AsString;
         }
+
+
 
     }
 }

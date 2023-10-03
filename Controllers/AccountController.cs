@@ -88,6 +88,15 @@ namespace udembankproject.Controllers
             AnsiConsole.Markup("[yellow]Press Enter to continue...[/]");
             Console.ReadLine();
         }
+        public static void RestarMontoAlAccount(ObjectId userID, int monto)
+        {
+            var accountID = userID; // No es necesario convertirlo, ya es un ObjectId
+            var filterCuenta = Builders<BsonDocument>.Filter.Eq("_id", accountID);
+            var update = Builders<BsonDocument>.Update.Inc("Amount", -monto); // Resta el monto al amount
+
+            Collections.GetAccountsCollectionBson().UpdateOne(filterCuenta, update);
+        }
+
 
     }
 }

@@ -153,6 +153,62 @@ namespace udembankproject.Controllers
             return conteo < 3;
         }
 
+        //--------------------Transfer savings group
+
+        public static List<BsonDocument> ObtenerGruposParaUsuarioActivo()
+        {
+            var activeUserId = MenuManager.ActiveUser;
+
+            var filter = Builders<BsonDocument>.Filter.AnyEq("UsersID", activeUserId);
+            var grupos = Collections.GetSavingsGroupCollectionBson().Find(filter).ToList();
+            return grupos;
+        }
+
+        public static BsonDocument? SelectSavingGroupToTransfer()
+        {
+            var list = ObtenerGruposParaUsuarioActivo();
+            if (list.Count == 0)
+            {
+                return null;
+            }
+            var eo = list.Select(x => x["Name"].AsString).ToArray();
+            string selectedName = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                .Title("select a user to invite")
+                .AddChoices(eo));
+
+            // Ahora, busca el documento correspondiente al nombre seleccionado
+            BsonDocument option = list.First(x => x["Name"].AsString == selectedName);
+
+            return option;
+        }
+
+        public static void TransferToSavingGroup()
+        {
+            var BsonTranfer = SelectSavingGroupToTransfer();
+            if (BsonTranfer == null)
+            {
+                Console.WriteLine("savingsGroup in which these were not found");
+                return;
+            }
+            var amountToTransfer = AnsiConsole.Prompt(new TextPrompt<int>("Amount to transfer: ")
+                .PromptStyle(Style.Parse("green"))
+                );
+
+            RestarMontoAlSavingsGroup(BsonTranfer, amountToTransfer);
+            AccountController.RestarMontoAlAccount(MenuManager.ActiveUser, amountToTransfer);
+            var savingsGroupID = BsonTranfer["_id"].AsObjectId;
+
+            TransfersController.SaveTransfer(MenuManager.ActiveUser, savingsGroupID, amountToTransfer);
+
+        }
+
+        public static void RestarMontoAlSavingsGroup(BsonDocument savingsGroup, int monto)
+        {
+            var savingsGroupID = savingsGroup["_id"].AsObjectId;
+            var filterSavingsGroup = Builders<BsonDocument>.Filter.Eq("_id", savingsGroupID);
+            var update = Builders<BsonDocument>.Update.Inc("Amount", +monto); // Restar el monto al amount
+            Collections.GetSavingsGroupCollectionBson().UpdateOne(filterSavingsGroup, update);
+        }
 
 
     }
