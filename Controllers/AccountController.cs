@@ -25,10 +25,8 @@ namespace udembankproject.Controllers
         public static ObjectId? GetAccountID(string AccountNumber)
         {
             ObjectId AccountID;
-            IMongoDatabase database = DBconnection.Connection();
-            var collection = database.GetCollection<BsonDocument>("Accounts");
             var filter = Builders<BsonDocument>.Filter.Eq("Account Number", AccountNumber);
-            var result = collection.Find(filter).ToList();
+            var result = Collections.GetAccountsCollectionBson().Find(filter).ToList();
 
             if (result.Count() == 1)
             {
@@ -42,11 +40,10 @@ namespace udembankproject.Controllers
             }
         }
 
-        public void ViewAccounts()
+        public static void ViewAccounts()
         {
             // Recupera la lista de cuentas desde la base de datos
-            var accounts = accountCollection.Find(_ => true).ToList();
-
+            var accounts = Collections.GetAccountsCollectionOriginal().Find(_ => true).ToList();
             // Crea y muestra la tabla de cuentas
             var table = new Table()
                 .Title("Accounts")
@@ -73,7 +70,7 @@ namespace udembankproject.Controllers
             Console.ReadLine();
         }
 
-        public void CreateAccount()
+        public static void CreateAccount()
         {
             AnsiConsole.Clear();
 
@@ -102,12 +99,21 @@ namespace udembankproject.Controllers
             };
 
             // Inserta la nueva cuenta en la base de datos
-            accountCollection.InsertOne(newAccount);
+            Collections.GetAccountsCollectionOriginal().InsertOne(newAccount);
 
             AnsiConsole.MarkupLine("[green]Account created successfully![/]");
             AnsiConsole.Markup("[yellow]Press Enter to continue...[/]");
             Console.ReadLine();
         }
+        public static void RestarMontoAlAccount(ObjectId userID, int monto)
+        {
+            var accountID = userID; // No es necesario convertirlo, ya es un ObjectId
+            var filterCuenta = Builders<BsonDocument>.Filter.Eq("_id", accountID);
+            var update = Builders<BsonDocument>.Update.Inc("Amount", -monto); // Resta el monto al amount
+
+            Collections.GetAccountsCollectionBson().UpdateOne(filterCuenta, update);
+        }
+
 
     }
 }

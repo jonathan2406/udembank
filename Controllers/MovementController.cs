@@ -12,14 +12,8 @@ namespace udembankproject.Controllers
 {
     public class MovementController
     {
-        private readonly IMongoCollection<Movement> movementCollection;
 
-        public MovementController(IMongoCollection<Movement> movementCollection)
-        {
-            this.movementCollection = movementCollection;
-        }
-
-        public void CreateMovement(DateTime dateTime, int amount, ObjectId type_id, int accountsBalance)
+        public static void CreateMovement(DateTime dateTime, int amount, ObjectId type_id, int accountsBalance)
         {
             var newMovement = new Movement
             {
@@ -29,12 +23,12 @@ namespace udembankproject.Controllers
                 AccountsBalance = accountsBalance
             };
 
-            movementCollection.InsertOne(newMovement);
+            Collections.GetMovementsCollectionOriginal().InsertOne(newMovement);
         }
 
-        public void ViewMovements()
+        public static void ViewMovements()
         {
-            var movements = movementCollection.Find(_ => true).ToList();
+            var movements = Collections.GetMovementsCollectionOriginal().Find(_ => true).ToList();
 
             var table = new Table()
                 .Title("Movements")

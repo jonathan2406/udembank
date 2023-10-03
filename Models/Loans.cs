@@ -22,7 +22,10 @@ namespace udembankproject.Models
 
         [BsonElement("Id_user")]
         public ObjectId Id_user { get; set; }
-        
+
+        [BsonElement("Id_group")]
+        public ObjectId Id_group { get; set; }
+
         [BsonElement("Amount")]
 
         public int Amount { get; set; }

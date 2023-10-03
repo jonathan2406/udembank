@@ -111,8 +111,8 @@ namespace udembankproject.Controllers
             receptionAccount.Amount += amount;
 
             // Actualiza las cuentas en la base de datos
-            accountCollection.UpdateOne(x => x.Id == sendAccount.Id, Builders<Accounts>.Update.Set(a => a.Amount, sendAccount.Amount));
-            accountCollection.UpdateOne(x => x.Id == receptionAccount.Id, Builders<Accounts>.Update.Set(a => a.Amount, receptionAccount.Amount));
+            Collections.GetAccountsCollectionOriginal().UpdateOne(x => x.Id == sendAccount.Id, Builders<Accounts>.Update.Set(a => a.Amount, sendAccount.Amount));
+            Collections.GetAccountsCollectionOriginal().UpdateOne(x => x.Id == receptionAccount.Id, Builders<Accounts>.Update.Set(a => a.Amount, receptionAccount.Amount));
 
             SaveTransfer(sendAccount.Id, receptionAccount.Id, amount);
 
@@ -126,14 +126,14 @@ namespace udembankproject.Controllers
             };
 
             // Inserta el nuevo registro de movimiento en la base de datos
-            movementCollection.InsertOne(newMovement);
+            Collections.GetMovementsCollectionOriginal().InsertOne(newMovement);
 
             AnsiConsole.MarkupLine("[green]Transfer successful![/]");
             AnsiConsole.Markup("[yellow]Press Enter to continue...[/]");
             Console.ReadLine();
         }
 
-        public void SaveTransfer(ObjectId sendId, ObjectId receptionId, int amount)
+        public static void SaveTransfer(ObjectId sendId, ObjectId receptionId, int amount)
         {
             // Crea un nuevo objeto Transfers con los datos de la transferencia
             var transfer = new Transfers
@@ -144,15 +144,16 @@ namespace udembankproject.Controllers
             };
 
             // Inserta la transferencia en la colección de MongoDB
-            transfersCollection.InsertOne(transfer);
+            Collections.GetTransfersCollectionOriginal().InsertOne(transfer);
         }
 
-        public void ViewTransfers()
+
+        public static void ViewTransfers()
         {
             AnsiConsole.Clear();
 
             // Recupera la lista de transferencias desde la base de datos
-            var transfers = transfersCollection.Find(_ => true).ToList();
+            var transfers = Collections.GetTransfersCollectionOriginal().Find(_ => true).ToList();
 
             // Crea y muestra la tabla de transferencias
             var table = new Table()
