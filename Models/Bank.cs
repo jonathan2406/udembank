@@ -20,5 +20,8 @@ namespace udembankproject.Models
 
         [BsonElement("SavingsGroupID")]
         public ObjectId SavingsGroupID { get; set; }
+
+        [BsonElement("AmountGains")]
+        public double AmountGains { get; set; }
     }
 }

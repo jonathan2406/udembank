@@ -14,7 +14,7 @@ namespace udembankproject
 {
     public class MenuManager
     {
-        public static ObjectId ActiveUser;
+        public static ObjectId ActiveUser { get; set; }
         public static void SetActiveUser(string username)
         {
 
@@ -27,8 +27,13 @@ namespace udembankproject
         public MenuManager(IMongoDatabase database)
         {
             var collection = database.GetCollection<Accounts>("Accounts");
-            this.accountController = new AccountController(collection);
-            this.transfersController = new TransfersController(collection, database.GetCollection<Movement>("Movement"), database.GetCollection<Transfers>("Transfers"));
+            this.accountController = new AccountController(collection, ActiveUser);
+            this.transfersController = new TransfersController(
+                collection,
+                database.GetCollection<Movement>("Movement"),
+                database.GetCollection<Transfers>("Transfers"),
+                ActiveUser // Utiliza la cuenta asignada al usuario activo
+            );
             this.movementController = new MovementController(database.GetCollection<Movement>("Movement"));
         }
         enum Register_LoginOptions

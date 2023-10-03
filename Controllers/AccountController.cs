@@ -15,10 +15,12 @@ namespace udembankproject.Controllers
     {
 
         private readonly IMongoCollection<Accounts> accountCollection;
+        private readonly ObjectId ActiveUser;
 
-        public AccountController(IMongoCollection<Accounts> accountCollection)
+        public AccountController(IMongoCollection<Accounts> accountCollection, ObjectId activeUser)
         {
             this.accountCollection = accountCollection;
+            this.ActiveUser = activeUser;
         }
         public static ObjectId? GetAccountID(string AccountNumber)
         {
@@ -60,7 +62,7 @@ namespace udembankproject.Controllers
                     account.AccountNumber,
                     account.OwnerName,
                     account.Amount.ToString(),
-                    account.Id
+                    account.Id.ToString()
                 );
             }
 
