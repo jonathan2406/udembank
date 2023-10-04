@@ -23,12 +23,12 @@ namespace udembankproject.Controllers
                 AccountsBalance = accountsBalance
             };
 
-            Collections.GetMovementsCollectionOriginal().InsertOne(newMovement);
+            Collections.GetMovementsCollection().InsertOne(newMovement);
         }
 
         public static void ViewMovements()
         {
-            var movements = Collections.GetMovementsCollectionOriginal().Find(_ => true).ToList();
+            var movements = Collections.GetMovementsCollection().Find(_ => true).ToList();
 
             var table = new Table()
                 .Title("Movements")

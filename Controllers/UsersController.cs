@@ -47,7 +47,7 @@ namespace udembankproject.Controllers
                 Cheats = false
             };
 
-            Collections.GetUsersCollectionOriginal().InsertOne(insertion);
+            Collections.GetUsersCollection().InsertOne(insertion);
             Console.WriteLine("Successful registration");
             Thread.Sleep(2000);
         }
@@ -150,8 +150,5 @@ namespace udembankproject.Controllers
 
             return cuenta.GetValue("Account Number").AsString;
         }
-
-
-
     }
 }

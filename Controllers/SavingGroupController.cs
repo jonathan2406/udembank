@@ -62,7 +62,7 @@ namespace udembankproject.Controllers
                 };
             }
 
-            Collections.GetSavingsGroupCollectionOriginal().InsertOne(insertion);
+            Collections.GetSavingsGroupCollection().InsertOne(insertion);
             Console.WriteLine("Successful creation");
             Thread.Sleep(2000);
         }
@@ -76,7 +76,7 @@ namespace udembankproject.Controllers
             }
             var UsersEnabledToInviteArray = list.Select(x => x["User"].AsString).ToArray();
             string option = AnsiConsole.Prompt(new SelectionPrompt<string>()
-                .Title("select a user to invite")
+                .Title("Select a user to invite")
                 .AddChoices(UsersEnabledToInviteArray));
             return UsersController.ObtenerIdPorUsername(option);
         }
@@ -85,12 +85,12 @@ namespace udembankproject.Controllers
             var list = GetUsersEnabledToInvite(repetido);
             if (list.Count == 0)
             {
-                Console.WriteLine("there are no users to invite");
+                Console.WriteLine("There are no users to invite");
                 return null;
             }
             var UsersEnabledToInviteArray = list.Select(x => x["User"].AsString).ToArray();
             string option = AnsiConsole.Prompt(new SelectionPrompt<string>()
-                .Title("select a user to invite")
+                .Title("Select a user to invite")
                 .AddChoices(UsersEnabledToInviteArray));
             return UsersController.ObtenerIdPorUsername(option);
         }
@@ -210,6 +210,37 @@ namespace udembankproject.Controllers
             Collections.GetSavingsGroupCollectionBson().UpdateOne(filterSavingsGroup, update);
         }
 
+        public static void ViewMySavingsGroups()
+        {
+            var savingGroups = Collections.GetSavingsGroupCollection().Find(_ => true).ToList();
+            // Crea y muestra la tabla de cuentas
 
+            var table = new Table()
+                .Title("SavingsGroup")
+                .BorderColor(Color.Green)
+                .AddColumn("Name", column => column.Alignment(Justify.Left))
+                .AddColumn("UsersID", column => column.Alignment(Justify.Left))
+                .AddColumn("Amount", column => column.Alignment(Justify.Left))
+                .AddColumn("ID", column => column.Alignment(Justify.Left));
+
+            foreach (var savingGroup in savingGroups)
+            {
+                // Convierte la lista de UsersID a una cadena separada por comas
+                string usersIdsString = string.Join(", ", savingGroup.UsersID);
+
+                table.AddRow(
+                    savingGroup.Name,
+                    usersIdsString, // Usa la cadena creada en lugar de savingGroup.UsersID.ToString()
+                    savingGroup.Amount.ToString(),
+                    savingGroup.Id.ToString()
+                );
+            }
+
+            AnsiConsole.Clear();
+            AnsiConsole.Render(table);
+
+            AnsiConsole.Markup("[yellow] Press enter to continue...[/]");
+            Console.ReadLine();
+        }
     }
 }

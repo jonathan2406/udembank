@@ -57,8 +57,10 @@ namespace udembankproject
                     case MainMenuOptions.CreateAccounts:
                         AccountController.CreateAccount();
                         break;
+                        
                     case MainMenuOptions.TransferAmounts:
-                        TransfersController.TransferAmounts();
+                        var transfersController = new TransfersController(Collections.GetAccountsCollection(), ActiveUser);
+                        transfersController.TransferAmounts();
                         break;
                     case MainMenuOptions.ViewMovements:
                         MovementController.ViewMovements();
@@ -80,6 +82,7 @@ namespace udembankproject
             switch (MenuManager.SavingsGroupMenu1())
             {
                 case SavingsGroupOptions.ViewMySavingsGroups:
+                    SavingGroupController.ViewMySavingsGroups();
                     break;
 
                 case SavingsGroupOptions.CreateSavingsGroups:

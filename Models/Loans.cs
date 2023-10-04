@@ -30,6 +30,5 @@ namespace udembankproject.Models
 
         public int Amount { get; set; }
 
-
     }
 }

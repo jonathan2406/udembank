@@ -21,7 +21,7 @@ namespace udembankproject.Controllers
             };
 
             // Inserta la transferencia en la colección de MongoDB
-            Collections.GetTransfersCollectionOriginal().InsertOne(transfer);
+            Collections.GetTransfersCollection().InsertOne(transfer);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace udembankproject.Controllers
         public static void ViewAccounts()
         {
             // Recupera la lista de cuentas desde la base de datos
-            var accounts = Collections.GetAccountsCollectionOriginal().Find(_ => true).ToList();
+            var accounts = Collections.GetAccountsCollection().Find(_ => true).ToList();
             // Crea y muestra la tabla de cuentas
             var table = new Table()
                 .Title("Accounts")
@@ -99,7 +99,7 @@ namespace udembankproject.Controllers
             };
 
             // Inserta la nueva cuenta en la base de datos
-            Collections.GetAccountsCollectionOriginal().InsertOne(newAccount);
+            Collections.GetAccountsCollection().InsertOne(newAccount);
 
             AnsiConsole.MarkupLine("[green]Account created successfully![/]");
             AnsiConsole.Markup("[yellow]Press Enter to continue...[/]");
@@ -113,8 +113,6 @@ namespace udembankproject.Controllers
 
             Collections.GetAccountsCollectionBson().UpdateOne(filterCuenta, update);
         }
-
-
     }
 }
 

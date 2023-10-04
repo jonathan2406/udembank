@@ -18,13 +18,13 @@ namespace udembankproject
             return collection;
         }
 
-        public static IMongoCollection<Accounts> GetAccountsCollectionOriginal()
+        public static IMongoCollection<Accounts> GetAccountsCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
             var collection = database.GetCollection<Accounts>("Accounts");
             return collection;
         }
-
+        
         public static IMongoCollection<BsonDocument> GetUsersCollectionBson()
         {
             IMongoDatabase database = DBconnection.Connection();
@@ -32,7 +32,7 @@ namespace udembankproject
             return collection;
         }
 
-        public static IMongoCollection<Users> GetUsersCollectionOriginal()
+        public static IMongoCollection<Users> GetUsersCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
             var collection = database.GetCollection<Users>("Users");
@@ -46,7 +46,7 @@ namespace udembankproject
             return collection;
         }
 
-        public static IMongoCollection<Savings_Group> GetSavingsGroupCollectionOriginal()
+        public static IMongoCollection<Savings_Group> GetSavingsGroupCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
             var collection = database.GetCollection<Savings_Group>("SavingsGroup");
@@ -60,7 +60,7 @@ namespace udembankproject
             return collection;
         }
 
-        public static IMongoCollection<Loans> GetLoansCollectionOriginal()
+        public static IMongoCollection<Loans> GetLoansCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
             var collection = database.GetCollection<Loans>("Loans");
@@ -74,7 +74,7 @@ namespace udembankproject
             return collection;
         }
 
-        public static IMongoCollection<Movement> GetMovementsCollectionOriginal()
+        public static IMongoCollection<Movement> GetMovementsCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
             var collection = database.GetCollection<Movement>("Movement");
@@ -88,7 +88,7 @@ namespace udembankproject
             return collection;
         }
 
-        public static IMongoCollection<Transfers> GetTransfersCollectionOriginal()
+        public static IMongoCollection<Transfers> GetTransfersCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
             var collection = database.GetCollection<Transfers>("Transfers");
@@ -102,7 +102,7 @@ namespace udembankproject
             return collection;
         }
 
-        public static IMongoCollection<Bank> GetBankCollectionOriginal()
+        public static IMongoCollection<Bank> GetBankCollection()
         {
             IMongoDatabase database = DBconnection.Connection();
             var collection = database.GetCollection<Bank>("Bank");
