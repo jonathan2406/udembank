@@ -56,8 +56,7 @@ namespace udembankproject
                         break;
                     case MainMenuOptions.CreateAccounts:
                         AccountController.CreateAccount();
-                        break;
-                        
+                        break;   
                     case MainMenuOptions.TransferAmounts:
                         var transfersController = new TransfersController(Collections.GetAccountsCollection(), ActiveUser);
                         transfersController.TransferAmounts();

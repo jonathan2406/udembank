@@ -16,51 +16,67 @@ namespace udembankproject.Controllers
         public static void AddSavingGroup()
         {
             var NameGroup = AnsiConsole.Ask<string>("Name group: ");
-            ObjectId? FirstUser = Invite();
-            ObjectId? SecondUser = null;
+            string FirstAccountNumber = AnsiConsole.Ask<string>("Enter the Account Number of the first user: ");
+            ObjectId? FirstUser = AccountController.GetAccountID(FirstAccountNumber);
+
             if (FirstUser == null)
             {
                 Console.WriteLine("The group could not be created because there is not at least one user to add");
                 return;
             }
-            var menuSecondUser = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("Do you want to add a second user?")
-                        .AddChoices("Yes", "No")
-                );
 
-            switch (menuSecondUser)
+            var menuSecondUser = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Do you want to add a second user?")
+            .AddChoices("Yes", "No")
+            );
+
+            ObjectId? SecondUser = null;
+            ObjectId? ThirdUser = null;
+
+            if (menuSecondUser == "Yes")
             {
-                case "Yes":
-                    SecondUser = Invite(FirstUser);
-                    break;
-                case "No":
-                    break;
+                string SecondAccountNumber = AnsiConsole.Ask<string>("Enter the Account Number of the second user: ");
+                SecondUser = AccountController.GetAccountID(SecondAccountNumber);
+
+                // Verifica si se puede agregar un tercer usuario
+                if (SecondUser != null)
+                {
+                    var menuThirdUser = AnsiConsole.Prompt(
+                        new SelectionPrompt<string>()
+                            .Title("Do you want to add a third user?")
+                            .AddChoices("Yes", "No")
+                    );
+
+                    if (menuThirdUser == "Yes")
+                    {
+                        string ThirdAccountNumber = AnsiConsole.Ask<string>("Enter the Account Number of the third user: ");
+                        ThirdUser = AccountController.GetAccountID(ThirdAccountNumber);
+                    }
+                }
             }
+
             Savings_Group insertion;
-            List<ObjectId?> idslist = new List<ObjectId?> { };
-            idslist.Add(MenuManager.ActiveUser);
-            idslist.Add(FirstUser);
-            if (SecondUser == null)
+            List<ObjectId?> accountIdsList = new List<ObjectId?> { };
+
+            accountIdsList.Add(FirstUser);
+
+            if (SecondUser != null)
             {
-                insertion = new Savings_Group
-                {
-                    
-                    Name = NameGroup,
-                    UsersID = idslist,
-                    Amount = 0
-                };
+                accountIdsList.Add(SecondUser);
             }
-            else
+
+            if (ThirdUser != null)
             {
-                idslist.Add(SecondUser);
-                insertion = new Savings_Group
-                {
-                    Name = NameGroup,
-                    UsersID = idslist,
-                    Amount = 0
-                };
+                accountIdsList.Add(ThirdUser);
             }
+
+            insertion = new Savings_Group
+            {
+                Name = NameGroup,
+                UsersID = accountIdsList,
+                Amount = 0
+            };
 
             Collections.GetSavingsGroupCollection().InsertOne(insertion);
             Console.WriteLine("Successful creation");
@@ -155,25 +171,23 @@ namespace udembankproject.Controllers
 
         //--------------------Transfer savings group
 
-        public static List<BsonDocument> ObtenerGruposParaUsuarioActivo()
+        public static List<BsonDocument> ObtenerGruposParaUsuarioActivo(ObjectId? userAccountId)
         {
-            var activeUserId = MenuManager.ActiveUser;
-
-            var filter = Builders<BsonDocument>.Filter.AnyEq("UsersID", activeUserId);
+            var filter = Builders<BsonDocument>.Filter.AnyEq("UsersID", userAccountId);
             var grupos = Collections.GetSavingsGroupCollectionBson().Find(filter).ToList();
             return grupos;
         }
 
-        public static BsonDocument? SelectSavingGroupToTransfer()
+        public static BsonDocument? SelectSavingGroupToTransfer(ObjectId? userAccountId)
         {
-            var list = ObtenerGruposParaUsuarioActivo();
+            var list = ObtenerGruposParaUsuarioActivo(userAccountId);
             if (list.Count == 0)
             {
                 return null;
             }
             var eo = list.Select(x => x["Name"].AsString).ToArray();
             string selectedName = AnsiConsole.Prompt(new SelectionPrompt<string>()
-                .Title("select a user to invite")
+                .Title("Select a user to invite")
                 .AddChoices(eo));
 
             // Ahora, busca el documento correspondiente al nombre seleccionado
@@ -182,24 +196,40 @@ namespace udembankproject.Controllers
             return option;
         }
 
+
         public static void TransferToSavingGroup()
         {
-            var BsonTranfer = SelectSavingGroupToTransfer();
-            if (BsonTranfer == null)
+            string userAccountNumber = UsersController.ObtenerNumeroDeCuentaPorUserId(MenuManager.ActiveUser);
+
+            // Obtén el ID de la cuenta del usuario logeado en función del número de cuenta
+            ObjectId? userAccountId = AccountController.GetAccountID(userAccountNumber);
+
+            if (userAccountId == null)
             {
-                Console.WriteLine("savingsGroup in which these were not found");
+                Console.WriteLine("User account not found");
                 return;
             }
+
+            // Selecciona el grupo de ahorro en función del ID de la cuenta del usuario logeado
+            var BsonTranfer = SelectSavingGroupToTransfer(userAccountId);
+
+            if (BsonTranfer == null)
+            {
+                Console.WriteLine("SavingsGroup in which these were not found");
+                return;
+            }
+
             var amountToTransfer = AnsiConsole.Prompt(new TextPrompt<int>("Amount to transfer: ")
                 .PromptStyle(Style.Parse("green"))
-                );
+            );
 
             RestarMontoAlSavingsGroup(BsonTranfer, amountToTransfer);
-            AccountController.RestarMontoAlAccount(MenuManager.ActiveUser, amountToTransfer);
+
+            // Resta el monto de la cuenta del usuario logeado utilizando su ID de cuenta
+            AccountController.RestarMontoAlAccount(userAccountId.Value, amountToTransfer);
             var savingsGroupID = BsonTranfer["_id"].AsObjectId;
 
-            TransfersController.SaveTransfer(MenuManager.ActiveUser, savingsGroupID, amountToTransfer);
-
+            TransfersController.SaveTransfer(userAccountId.Value, savingsGroupID, amountToTransfer);
         }
 
         public static void RestarMontoAlSavingsGroup(BsonDocument savingsGroup, int monto)

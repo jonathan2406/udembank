@@ -14,8 +14,6 @@ namespace udembankproject
 
             MainController.Run();
 
-
-
         }
     }
 }

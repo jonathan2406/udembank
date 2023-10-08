@@ -25,6 +25,5 @@ namespace udembankproject.Models
 
         [BsonElement("Amount")]
         public int Amount { get; set; }
-
     }
 }

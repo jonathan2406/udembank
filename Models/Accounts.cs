@@ -12,19 +12,16 @@ namespace udembankproject.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-
         public ObjectId Id { get; set; }
 
         [BsonElement("Owner name")]
         public string OwnerName { get; set; }
 
         [BsonElement("Account Number")]
-
         public string AccountNumber { get; set; }
 
-       
         [BsonElement("Amount")]
-
         public int Amount { get; set; }
+
     }
 }

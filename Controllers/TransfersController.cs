@@ -59,12 +59,15 @@ namespace udembankproject.Controllers
         {
             AnsiConsole.Clear();
 
-            var accountNumber = AnsiConsole.Prompt(
-                new TextPrompt<string>($"Enter {accountType} Account Number: ")
-                    .PromptStyle(Style.Parse("green"))
-            );
+            if (userAccountNumber == null)
+            {
+                userAccountNumber = AnsiConsole.Prompt(
+                    new TextPrompt<string>($"Enter {accountType} Account Number: ")
+                        .PromptStyle(Style.Parse("green"))
+                );
+            }
 
-            var account = accountCollection.Find(x => x.AccountNumber == accountNumber).FirstOrDefault();
+            var account = accountCollection.Find(x => x.AccountNumber == userAccountNumber).FirstOrDefault();
 
             if (account == null)
             {

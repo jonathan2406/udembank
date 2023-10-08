@@ -113,8 +113,18 @@ namespace udembankproject.Controllers
 
             Collections.GetAccountsCollectionBson().UpdateOne(filterCuenta, update);
         }
+
+        public static void RestarMontoAlAccount(string accountNumber, int monto)
+        {
+            var filter = Builders<Accounts>.Filter.Eq(x => x.AccountNumber, accountNumber);
+            var account = Collections.GetAccountsCollection().Find(filter).FirstOrDefault();
+
+            if (account != null)
+            {
+                account.Amount -= monto;
+                var update = Builders<Accounts>.Update.Set(x => x.Amount, account.Amount);
+                Collections.GetAccountsCollection().UpdateOne(filter, update);
+            }
+        }
     }
 }
-
-
-
