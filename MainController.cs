@@ -67,6 +67,9 @@ namespace udembankproject
                     case MainMenuOptions.ViewTransfers:
                         TransfersController.ViewTransfers();
                         break;
+                    case MainMenuOptions.ViewBank:
+                        BankController.ViewBank();
+                        break;
                     case MainMenuOptions.SavingsGroups:
                         SavingsGroup();
                         break;
@@ -87,10 +90,27 @@ namespace udembankproject
                 case SavingsGroupOptions.CreateSavingsGroups:
                     SavingGroupController.AddSavingGroup();
                     break;
-
+                case SavingsGroupOptions.DissolveSavingsGroups:
+                    SavingGroupController.DissolveSavingsGroup();
+                    break;
                 case SavingsGroupOptions.TransferToSavingGroup:
                     SavingGroupController.TransferToSavingGroup();
                     break;
+                case SavingsGroupOptions.ViewLoans:
+                    LoansController.ViewLoans(ActiveUser);
+                    break;
+                case SavingsGroupOptions.RequestLoan:
+                    LoansController.RequestLoan(ActiveUser);
+                    break;
+                case SavingsGroupOptions.RequestLoanFromAnotherGroup:
+                    LoansController.RequestLoanFromAnotherGroup(ActiveUser);
+                    break;
+                case SavingsGroupOptions.RepayLoan:
+                    LoansController.RepayLoan(ActiveUser);
+                    break;
+                case SavingsGroupOptions.RewardTopSavingsGroup:
+                    BankController.RewardTopSavingsGroup();
+                        break;
             }
         }
     }

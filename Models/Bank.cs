@@ -16,12 +16,16 @@ namespace udembankproject.Models
         public string Id { get; set; }
 
         [BsonElement("UsersID")]
-        public ObjectId UsersID { get; set; }
+        public ObjectId? UsersID { get; set; }
 
-        [BsonElement("SavingsGroupID")]
-        public ObjectId SavingsGroupID { get; set; }
+        [BsonElement("UserAccountIDs")]
+        public List<ObjectId> UserAccountIDs { get; set; }
 
         [BsonElement("AmountGains")]
         public double AmountGains { get; set; }
+
+        [BsonElement("TotalAmount")] 
+        public double TotalAmount { get; set; }
+
     }
 }

@@ -23,5 +23,8 @@ namespace udembankproject.Models
 
         [BsonElement("Amount")]
         public int Amount { get; set; }
+
+        [BsonElement("Contributions")]
+        public Dictionary<ObjectId, int> Contributions { get; set; }
     }
 }

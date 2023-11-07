@@ -21,11 +21,13 @@ namespace udembankproject.Models
         public DateTime DateTime { get; set; }
 
         [BsonElement("Amount")]
-
         public int Amount { get; set; }
 
         [BsonElement("Type_Id")]
         public ObjectId Type_Id { get; set; }
+
+        [BsonElement("SenderId")]
+        public ObjectId SenderId { get; set; }
 
         [BsonElement("AccountsBalance")]
         public int AccountsBalance { get; set;}

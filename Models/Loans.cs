@@ -20,15 +20,19 @@ namespace udembankproject.Models
         [BsonElement("Interest_Percent")]
         public double Interest_Percent { get; set; }
 
-        [BsonElement("Id_user")]
-        public ObjectId Id_user { get; set; }
+        [BsonElement("Id_Account")]
+        public ObjectId Id_Account{ get; set; }
 
         [BsonElement("Id_group")]
         public ObjectId Id_group { get; set; }
 
         [BsonElement("Amount")]
-
         public int Amount { get; set; }
 
+        [BsonElement("IsPaid")]
+        public bool IsPaid { get; set; }
+
+        [BsonElement("LoanTermMonths")]
+        public int LoanTermMonths { get; set; }
     }
 }

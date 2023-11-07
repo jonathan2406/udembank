@@ -126,5 +126,11 @@ namespace udembankproject.Controllers
                 Collections.GetAccountsCollection().UpdateOne(filter, update);
             }
         }
+        public static void AgregarMontoAlAccount(ObjectId accountId, int amount)
+        {
+            var filter = Builders<Accounts>.Filter.Eq(x => x.Id, accountId);
+            var update = Builders<Accounts>.Update.Inc(x => x.Amount, amount);
+            Collections.GetAccountsCollection().UpdateOne(filter, update);
+        }
     }
 }

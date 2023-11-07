@@ -12,7 +12,6 @@ namespace udembankproject.Controllers
 {
     public class MovementController
     {
-
         public static void CreateMovement(DateTime dateTime, int amount, ObjectId type_id, int accountsBalance)
         {
             var newMovement = new Movement
@@ -28,13 +27,30 @@ namespace udembankproject.Controllers
 
         public static void ViewMovements()
         {
-            var movements = Collections.GetMovementsCollection().Find(_ => true).ToList();
+            // Obtén el número de cuenta del usuario logeado
+            string userAccountNumber = UsersController.ObtenerNumeroDeCuentaPorUserId(MenuManager.ActiveUser);
 
+            // Obtiene el ID de la cuenta logeada en función del número de cuenta
+            ObjectId? userAccountId = AccountController.GetAccountID(userAccountNumber);
+
+            if (userAccountId == null)
+            {
+                Console.WriteLine("User account not found");
+                return;
+            }
+
+            // Filtra los movimientos que tienen el mismo SenderId que el ID de la cuenta logeada
+            var filter = Builders<Movement>.Filter.Eq("SenderId", userAccountId);
+
+            var movements = Collections.GetMovementsCollection().Find(filter).ToList();
+
+            // Crea y muestra la tabla de movimientos
             var table = new Table()
-                .Title("Movements")
+                .Title("My Movements")
                 .BorderColor(Color.Green)
                 .AddColumn("Date", column => column.Alignment(Justify.Left))
                 .AddColumn("Amount", column => column.Alignment(Justify.Left))
+                .AddColumn("Sender ID", column => column.Alignment(Justify.Left))
                 .AddColumn("Type ID", column => column.Alignment(Justify.Left))
                 .AddColumn("Account Balance", column => column.Alignment(Justify.Left));
 
@@ -44,7 +60,8 @@ namespace udembankproject.Controllers
                 table.AddRow(
                     movement.DateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     movement.Amount.ToString(),
-                    movement.Type_Id.ToString(), // Ahora Type_Id es ObjectId
+                    movement.SenderId.ToString(),
+                    movement.Type_Id.ToString(),
                     movement.AccountsBalance.ToString()
                 );
             }

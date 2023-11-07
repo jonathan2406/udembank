@@ -50,6 +50,7 @@ namespace udembankproject
             TransferAmounts,
             ViewMovements,
             ViewTransfers,
+            ViewBank,
             SavingsGroups,
             Exit
         }
@@ -66,6 +67,7 @@ namespace udembankproject
                     MainMenuOptions.TransferAmounts,
                     MainMenuOptions.ViewMovements,
                     MainMenuOptions.ViewTransfers,
+                    MainMenuOptions.ViewBank,
                     MainMenuOptions.SavingsGroups,
                     MainMenuOptions.Exit));
             Console.WriteLine(option);
@@ -76,7 +78,13 @@ namespace udembankproject
         {
             ViewMySavingsGroups,
             CreateSavingsGroups,
-            TransferToSavingGroup
+            DissolveSavingsGroups,
+            TransferToSavingGroup,
+            ViewLoans,
+            RequestLoan,
+            RequestLoanFromAnotherGroup,
+            RepayLoan,
+            RewardTopSavingsGroup
         }
         public static SavingsGroupOptions SavingsGroupMenu1()
         {
@@ -86,7 +94,13 @@ namespace udembankproject
                 .AddChoices(
                     SavingsGroupOptions.ViewMySavingsGroups,
                     SavingsGroupOptions.CreateSavingsGroups,
-                    SavingsGroupOptions.TransferToSavingGroup
+                    SavingsGroupOptions.DissolveSavingsGroups,
+                    SavingsGroupOptions.TransferToSavingGroup,
+                    SavingsGroupOptions.ViewLoans,
+                    SavingsGroupOptions.RequestLoan,
+                    SavingsGroupOptions.RequestLoanFromAnotherGroup,
+                    SavingsGroupOptions.RepayLoan,
+                    SavingsGroupOptions.RewardTopSavingsGroup
                     ));
             return option;
         }
