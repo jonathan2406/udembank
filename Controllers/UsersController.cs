@@ -11,8 +11,14 @@ using udembankproject.Models;
 
 namespace udembankproject.Controllers
 {
-    internal class UsersController
+    public class UsersController
     {
+
+        public static bool imprimir()
+        {
+            Console.WriteLine('o');
+            return true;
+        }
         public static void AddUser()
         {
             var name = AnsiConsole.Prompt(new TextPrompt<string>("User Name:")
