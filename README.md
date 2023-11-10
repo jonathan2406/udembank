@@ -4,4 +4,4 @@
 
 # UdemBank - Diagrama Identidad Relación:
 
-![Uploading CodeClean.drawio(1).png…]()
+![CodeClean drawio(1)](https://github.com/jonathan2406/udembank/assets/124312236/e7806d29-9ddb-4ec1-bb90-e7fabf67f525)
